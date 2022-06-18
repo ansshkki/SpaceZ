@@ -16,21 +16,27 @@ export class Physics {
     }
 
 
-    planets(bodies: Array<Body>){
+    planets(bodies: Array<Body>) {
         const planets = bodies.map(value => {
-            const pos = new Point(value.pos.x,value.pos.y)
-            return new Planet(value.id.toString(),value.mass * Math.pow(10  ,5),
-                pos, value.vector,value.radius)
+            const pos = new Point(value.pos.x, value.pos.y)
+            return new Planet(
+                value.id.toString(),
+                value.mass * Math.pow(10, 5),
+                pos,
+                value.vector,
+                value.radius,
+            )
         })
-        Planet_utils.updateAllPlanet(planets,1)
+        Planet_utils.updateAllPlanet(planets, 1)
         bodies.forEach(body => {
             planets.forEach(planet => {
-                if(body.id.toString() == planet.name){
+                if (body.id.toString() == planet.name) {
                     body.pos.x = planet.position.x
                     body.pos.y = planet.position.y
                     body.vector = planet.vector
+                    body.vel.set(planet.vector.vectorX(), planet.vector.vectorY(), 0)
+                    body.update()
                 }
-                body.update()
             })
         })
     }

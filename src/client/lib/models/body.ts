@@ -1,6 +1,5 @@
 import * as THREE from "three";
-import {Color, Mesh, Vector3} from "three";
-import {Point} from "../physics/obada/models/point";
+import {ArrowHelper, Color, Mesh, Vector3} from "three";
 import {Vector} from "../physics/obada/models/vector";
 
 export class Body {
@@ -11,6 +10,7 @@ export class Body {
     mass: number;
     radius: number;
     mesh: Mesh;
+    velVec: ArrowHelper;
     vector: Vector;
 
     constructor(id: number, pos: Vector3, vel: Vector3, mass: number, color: Color, mesh: Mesh,vector: Vector) {
@@ -22,6 +22,7 @@ export class Body {
         this.radius = Math.pow((3.0 / (4.0 * Math.PI)) * mass / 0.5, 1.0 / 3.0);
         this.mesh = mesh;
         this.vector = vector;
+        this.velVec = new THREE.ArrowHelper(vel.clone().normalize(), pos, Math.sqrt(this.vel.x*this.vel.x + this.vel.y*this.vel.y), this.color);
     }
 
     calcRadius(): number {
@@ -42,6 +43,10 @@ export class Body {
         // if (g instanceof THREE.SphereBufferGeometry) {
         //     g.set
         // }
+        this.velVec.position.set(this.pos.x, this.pos.y, this.pos.z)
+        this.velVec.setDirection(this.vel.clone().normalize())
+        this.velVec.setColor(this.color)
+        this.velVec.setLength(Math.sqrt(this.vel.x*this.vel.x + this.vel.y*this.vel.y))
     }
 
     toString(): string {

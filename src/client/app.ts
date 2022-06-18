@@ -30,9 +30,13 @@ const gui = new dat.GUI()
 const bodyProperties: BodyType[] = []
 const guiButtons = {
     addBody,
+    stopSimulation: true,
+    reset,
 }
 
-gui.add(guiButtons, "addBody")
+gui.add(guiButtons, "addBody").name("Add Body")
+gui.add(guiButtons, "stopSimulation").name("Stop Simulation")
+gui.add(guiButtons, "reset").name("Reset")
 
 function addBody() {
     let mesh = new THREE.Mesh(
@@ -85,20 +89,32 @@ function addBody() {
     })
     folder.addColor(object, "color").onChange(value => {
         body.color = new THREE.Color(value[0] / 255, value[1] / 255, value[2] / 255)
+        body.update()
     })
     folder.add(object, "remove").onChange(() => {
         const i = main.bodies.findIndex(v => v.id === mesh.id)
         main.bodies.splice(i, 1)
         gui.removeFolder(folder)
         scene.remove(mesh)
+        scene.remove(body.velVec)
     });
     const addButton = folder.add(object, "add")
     addButton.onChange(() => {
         body.update();
         main.bodies.push(body)
-        scene.add(body.mesh);
-        folder.remove(addButton);
+        scene.add(body.mesh)
+        scene.add(body.velVec)
+        folder.remove(addButton)
     })
+}
+
+function reset() {
+    for (const body of main.bodies) {
+        scene.remove(body.mesh)
+        scene.remove(body.velVec)
+        gui.removeFolder(gui.__folders[`Body ${body.id}`])
+    }
+    main.bodies.splice(0)
 }
 
 window.addEventListener('resize', onWindowResize)
@@ -112,7 +128,9 @@ function onWindowResize() {
 
 function animate() {
     requestAnimationFrame(animate)
-    main.update()
+    if (!guiButtons.stopSimulation) {
+        main.update()
+    }
     render()
 }
 
