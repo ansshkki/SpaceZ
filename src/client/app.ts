@@ -15,7 +15,7 @@ const camera = new THREE.PerspectiveCamera(
     0.1,
     1000,
 )
-camera.position.z = 5
+camera.position.z = 100
 
 const renderer = new THREE.WebGLRenderer()
 renderer.setSize(window.innerWidth, window.innerHeight)
@@ -52,14 +52,18 @@ function addBody() {
         velX: 0,
         velY: 0,
         mass: 0,
+        radius: 0,
         color: [255, 255, 255],
-        remove: () => {},
-        add: () => {}
+        remove: () => {
+        },
+        add: () => {
+        }
     })
     let body = new Body(
         mesh.id,
         new THREE.Vector3(0, 0, 0),
         new THREE.Vector3(0, 0, 0),
+        0,
         0,
         new THREE.Color(0xffffffff),
         mesh,
@@ -78,14 +82,13 @@ function addBody() {
     })
     folder.add(object, "velY").name("Initial velocity y").onChange(value => {
         body.vel.y = value
-        const startPoint = new Point(body.pos.x,body.pos.y)
-        const endPoint = new Point(body.vel.x + body.pos.x,body.vel.y + body.pos.y)
-        const length = Vector_utils.getLength(body.pos.x,body.vel.x,body.pos.y,body.vel.y)
-        body.vector = new Vector(length,startPoint,endPoint)
 
     })
     folder.add(object, "mass").name("Mass").onChange(value => {
         body.mass = value
+    })
+    folder.add(object, "radius").name("Radius").onChange(value => {
+        body.radius = value
     })
     folder.addColor(object, "color").name("Color").onChange(value => {
         body.color = new THREE.Color(value[0] / 255, value[1] / 255, value[2] / 255)
@@ -100,6 +103,11 @@ function addBody() {
     });
     const addButton = folder.add(object, "add").name("Done (add to scene)")
     addButton.onChange(() => {
+        const startPoint = new Point(body.pos.x, body.pos.y)
+        const endPoint = new Point(body.vel.x + body.pos.x, body.vel.y + body.pos.y)
+        const length = Vector_utils.getLength(startPoint.x, endPoint.x, startPoint.y, endPoint.y)
+        body.vector = new Vector(length, startPoint, endPoint)
+
         body.update();
         main.bodies.push(body)
         scene.add(body.mesh)
