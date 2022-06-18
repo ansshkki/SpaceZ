@@ -10,13 +10,8 @@ export class Physics {
 
     update(bodies: Array<Body>) {
 
-        this.planets(bodies)
 
 
-    }
-
-
-    planets(bodies: Array<Body>) {
         const planets = bodies.map(value => {
             const pos = new Point(value.pos.x, value.pos.y)
             return new Planet(
@@ -26,7 +21,7 @@ export class Physics {
                 value.vector,
                 value.radius,
             )
-        })
+            })
         Planet_utils.updateAllPlanet(planets, 1)
         bodies.forEach(body => {
             planets.forEach(planet => {
