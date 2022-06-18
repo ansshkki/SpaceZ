@@ -67,16 +67,16 @@ function addBody() {
     )
     let object = bodyProperties[bodyProperties.length - 1]
     const folder = gui.addFolder(`Body ${mesh.id}`)
-    folder.add(object, "posX").onChange(value => {
+    folder.add(object, "posX").name("Initial x").onChange(value => {
         body.pos.x = value
     })
-    folder.add(object, "posY").onChange(value => {
+    folder.add(object, "posY").name("Initial y").onChange(value => {
         body.pos.y = value
     });
-    folder.add(object, "velX").onChange(value => {
+    folder.add(object, "velX").name("Initial velocity x").onChange(value => {
         body.vel.x = value
     })
-    folder.add(object, "velY").onChange(value => {
+    folder.add(object, "velY").name("Initial velocity y").onChange(value => {
         body.vel.y = value
         const startPoint = new Point(body.pos.x,body.pos.y)
         const endPoint = new Point(body.vel.x,body.vel.y)
@@ -84,21 +84,21 @@ function addBody() {
         body.vector = new Vector(length,startPoint,endPoint)
 
     })
-    folder.add(object, "mass").onChange(value => {
+    folder.add(object, "mass").name("Mass").onChange(value => {
         body.mass = value
     })
-    folder.addColor(object, "color").onChange(value => {
+    folder.addColor(object, "color").name("Color").onChange(value => {
         body.color = new THREE.Color(value[0] / 255, value[1] / 255, value[2] / 255)
         body.update()
     })
-    folder.add(object, "remove").onChange(() => {
+    folder.add(object, "remove").name("Remove").onChange(() => {
         const i = main.bodies.findIndex(v => v.id === mesh.id)
         main.bodies.splice(i, 1)
         gui.removeFolder(folder)
         scene.remove(mesh)
         scene.remove(body.velVec)
     });
-    const addButton = folder.add(object, "add")
+    const addButton = folder.add(object, "add").name("Done (add to scene)")
     addButton.onChange(() => {
         body.update();
         main.bodies.push(body)
