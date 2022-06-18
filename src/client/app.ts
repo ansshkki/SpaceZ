@@ -3,6 +3,9 @@ import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 import {Main} from "./lib/main";
 import * as dat from 'dat.gui';
 import {Body, BodyType} from "./lib/models/body";
+import {Point} from "./lib/physics/obada/models/point";
+import {Vector} from "./lib/physics/obada/models/vector";
+import {Vector_utils} from "./lib/physics/obada/vector_utils";
 
 const scene = new THREE.Scene()
 
@@ -56,6 +59,7 @@ function addBody() {
         0,
         new THREE.Color(0xffffffff),
         mesh,
+        new Vector(0, new Point(0, 0), new Point(0, 0))
     )
     let object = bodyProperties[bodyProperties.length - 1]
     const folder = gui.addFolder(`Body ${mesh.id}`)
@@ -70,6 +74,11 @@ function addBody() {
     })
     folder.add(object, "velY").onChange(value => {
         body.vel.y = value
+        const startPoint = new Point(body.pos.x,body.pos.y)
+        const endPoint = new Point(body.vel.x,body.vel.y)
+        const length = Vector_utils.getLength(body.pos.x,body.vel.x,body.pos.y,body.vel.y)
+        body.vector = new Vector(length,startPoint,endPoint)
+
     })
     folder.add(object, "mass").onChange(value => {
         body.mass = value

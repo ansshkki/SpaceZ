@@ -8,30 +8,21 @@ import {Vector} from "./obada/models/vector";
 
 export class Physics {
 
-    constructor() {
-        const vector = new Vector(0, new Point(0, 0), new Point(2, 2))
-        const planet1 = new Planet("earth",  Math.pow(10,10), new Point(0, 0), vector,145)
+    update(bodies: Array<Body>) {
 
-        const vector1 = new Vector(0, new Point(0, 0), new Point(2, 2))
-        const planet2 = new Planet("sun", Math.pow(10  ,12), new Point(10, 30), vector1,422)
+        this.planets(bodies)
 
-        Planet_utils.updateAllPlanet([planet1,planet2],1)
-
-        console.log('planet1',planet1)
-        console.log('planet2',planet2)
 
     }
 
-    update(bodies: Array<Body>) {
+
+    planets(bodies: Array<Body>){
         const planets = bodies.map(value => {
             const pos = new Point(value.pos.x,value.pos.y)
             return new Planet(value.id.toString(),value.mass * Math.pow(10  ,5),
                 pos, value.vector,value.radius)
         })
-
-
         Planet_utils.updateAllPlanet(planets,1)
-
         bodies.forEach(body => {
             planets.forEach(planet => {
                 if(body.id.toString() == planet.name){
@@ -42,7 +33,39 @@ export class Physics {
                 body.update()
             })
         })
+    }
+
+
+
+    light(bodies: Array<Body>,lights: Array<Vector>){
+
+        bodies.forEach(value => {
+
+        })
 
 
     }
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

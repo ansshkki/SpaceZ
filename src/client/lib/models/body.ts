@@ -1,5 +1,7 @@
 import * as THREE from "three";
 import {Color, Mesh, Vector3} from "three";
+import {Point} from "../physics/obada/models/point";
+import {Vector} from "../physics/obada/models/vector";
 
 export class Body {
     id: number;
@@ -9,8 +11,9 @@ export class Body {
     mass: number;
     radius: number;
     mesh: Mesh;
+    vector: Vector;
 
-    constructor(id: number, pos: Vector3, vel: Vector3, mass: number, color: Color, mesh: Mesh) {
+    constructor(id: number, pos: Vector3, vel: Vector3, mass: number, color: Color, mesh: Mesh,vector: Vector) {
         this.id = id;
         this.pos = pos;
         this.vel = vel;
@@ -18,6 +21,7 @@ export class Body {
         this.color = color;
         this.radius = Math.pow((3.0 / (4.0 * Math.PI)) * mass / 0.5, 1.0 / 3.0);
         this.mesh = mesh;
+        this.vector = vector;
     }
 
     calcRadius(): number {
