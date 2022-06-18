@@ -18,21 +18,35 @@ export class Planet_utils {
         planets.forEach(value => {
             value.vector = this.planetVector(value, planets)
             value.position = this.planetNewPosition(value, dt)
+            this.planetCrashed(value, planets)
+
         })
     }
 
-
-    //TODO: Handle planet get out side the boarder.
-    static planetOutBoarder(planet: Planet){
-
+    static planetCrashed(planet: Planet, planets: Array<Planet>) {
+        planets.forEach(value => {
+            if (Vector_utils.pointCrashCircle(planet.position, value.position, value.r)) {
+                planets = planets.filter(obj => obj !== planet)
+                planets = planets.filter(obj => obj !== value)
+                if (this.mergePlanet(planet, value) != null) {
+                    planets.push(<Planet>this.mergePlanet(planet, value))
+                }
+            }
+        })
     }
 
-
-    //TODO: Handle planets crashed.
-    static planetCrashed(planets: Array<Planet>){
-        planets.forEach(value => {})
+    static mergePlanet(planet1: Planet, planet2: Planet): Planet | null {
+        if (planet1.mass > planet2.mass) {
+            return this.mergeTwoPlanets(planet1, planet2)
+        } else if (planet2.mass > planet1.mass) {
+            return this.mergeTwoPlanets(planet2, planet1)
+        } else return null
     }
 
+    static mergeTwoPlanets(bigPlanet: Planet, smallPlanet: Planet): Planet {
+        return new Planet(bigPlanet.name, bigPlanet.mass + (smallPlanet.mass * 2 / 3), bigPlanet.position,
+            Vector_utils.sumOfTwoVectors(bigPlanet.vector, smallPlanet.vector), bigPlanet.r + (smallPlanet.r * 2 / 3))
+    }
 
     static planetVector(planet: Planet, planets: Array<Planet>): Vector {
         const planetVectors = Array<Vector>()
@@ -47,7 +61,10 @@ export class Planet_utils {
 
     static planetNewPosition(planet: Planet, dt: number): Point {
         // f = m.a -> a = f/m -> a = dx/dt^2 -> x2 = (dt^2 * f / m) + x1
-        const x = (planet.vector.f * planet.vector.direction * Math.pow(dt, 2) / planet.mass) + planet.position.x
+        let mx = (planet.vector.vectorX() - planet.vector.effectPoint.x)
+        mx = mx / Math.abs(mx)
+        if(mx == 0) mx = 1
+        const x = (planet.vector.f * mx * Math.pow(dt, 2) / planet.mass) + planet.position.x
         // y - y1 = m (x - x1) -> y = m (x - x1) + y1
         const y = planet.vector.inclination.m * (x - planet.position.x) + planet.position.y
 

@@ -79,7 +79,7 @@ function addBody() {
     folder.add(object, "velY").name("Initial velocity y").onChange(value => {
         body.vel.y = value
         const startPoint = new Point(body.pos.x,body.pos.y)
-        const endPoint = new Point(body.vel.x,body.vel.y)
+        const endPoint = new Point(body.vel.x + body.pos.x,body.vel.y + body.pos.y)
         const length = Vector_utils.getLength(body.pos.x,body.vel.x,body.pos.y,body.vel.y)
         body.vector = new Vector(length,startPoint,endPoint)
 

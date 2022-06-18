@@ -64,5 +64,11 @@ export class Vector_utils {
             new Point(vectorX + vector1.effectPoint.x, vectorY + vector1.effectPoint.y))
     }
 
+    static pointCrashCircle(point: Point, circleCenter: Point, r: number):boolean{
+        //Find distance between the point and the center of the planet and compare with r
+        const dx = this.getLength(point.x,circleCenter.x,point.y,circleCenter.y)
+        return dx <= r
+    }
+
 }
 
