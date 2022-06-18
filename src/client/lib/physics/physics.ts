@@ -1,17 +1,12 @@
 import {Body} from "../models/body";
-import {Planet_utils} from "./obada/planet_utils";
-import {Planet} from "./obada/models/planet";
-import {Point} from "./obada/models/point";
-import {Vector} from "./obada/models/vector";
-
-
+import {Planet_utils} from "./moving/planet_utils";
+import {Planet} from "./moving/models/planet";
+import {Point} from "./moving/models/point";
+import {Vector} from "./moving/models/vector";
 
 export class Physics {
 
     update(bodies: Array<Body>) {
-
-
-
         const planets = bodies.map(value => {
             const pos = new Point(value.pos.x, value.pos.y)
             return new Planet(
@@ -21,7 +16,7 @@ export class Physics {
                 value.vector,
                 value.radius,
             )
-            })
+        })
         Planet_utils.updateAllPlanet(planets, 1)
         bodies.forEach(body => {
             planets.forEach(planet => {
@@ -36,15 +31,10 @@ export class Physics {
         })
     }
 
-
-
-    light(bodies: Array<Body>,lights: Array<Vector>){
-
+    light(bodies: Array<Body>, lights: Array<Vector>) {
         bodies.forEach(value => {
 
         })
-
-
     }
 
 }

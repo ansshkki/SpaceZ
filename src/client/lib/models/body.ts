@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import {ArrowHelper, Color, Mesh, Vector3} from "three";
-import {Vector} from "../physics/obada/models/vector";
+import {Vector} from "../physics/moving/models/vector";
 
 export class Body {
     id: number;

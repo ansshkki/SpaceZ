@@ -3,9 +3,9 @@ import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 import {Main} from "./lib/main";
 import * as dat from 'dat.gui';
 import {Body, BodyType} from "./lib/models/body";
-import {Point} from "./lib/physics/obada/models/point";
-import {Vector} from "./lib/physics/obada/models/vector";
-import {Vector_utils} from "./lib/physics/obada/vector_utils";
+import {Point} from "./lib/physics/moving/models/point";
+import {Vector} from "./lib/physics/moving/models/vector";
+import {Vector_utils} from "./lib/physics/moving/vector_utils";
 
 const scene = new THREE.Scene()
 
