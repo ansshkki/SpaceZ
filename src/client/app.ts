@@ -3,9 +3,7 @@ import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 import {Main} from "./lib/main";
 import * as dat from 'dat.gui';
 import {Body, BodyType} from "./lib/models/body";
-import {Point} from "./lib/physics/moving/models/point";
-import {Vector} from "./lib/physics/moving/models/vector";
-import {Vector_utils} from "./lib/physics/moving/vector_utils";
+import {test1, test2, test3} from "./lib/physics/examples";
 
 const scene = new THREE.Scene()
 
@@ -15,7 +13,8 @@ const camera = new THREE.PerspectiveCamera(
     0.1,
     1000,
 )
-camera.position.z = 100
+camera.position.z = 500
+
 
 const renderer = new THREE.WebGLRenderer()
 renderer.setSize(window.innerWidth, window.innerHeight)
@@ -32,11 +31,17 @@ const guiButtons = {
     addBody,
     stopSimulation: true,
     reset,
+    test1: () => test1(main, scene),
+    test2: () => test2(main, scene),
+    test3: () => test3(main, scene),
 }
 
 gui.add(guiButtons, "addBody").name("Add Body")
 gui.add(guiButtons, "stopSimulation").name("Stop Simulation")
 gui.add(guiButtons, "reset").name("Reset")
+gui.add(guiButtons, "test1").name("Test 1 (Sun and Earth)")
+gui.add(guiButtons, "test2").name("Test 2 (Initial velocity without collision)")
+gui.add(guiButtons, "test3").name("Test 3 (Initial velocity with collision)")
 
 function addBody() {
     let mesh = new THREE.Mesh(
@@ -67,7 +72,6 @@ function addBody() {
         0,
         new THREE.Color(0xffffffff),
         mesh,
-        new Vector(0, new Point(0, 0), new Point(0, 0))
     )
     let object = bodyProperties[bodyProperties.length - 1]
     const folder = gui.addFolder(`Body ${mesh.id}`)
@@ -103,11 +107,6 @@ function addBody() {
     });
     const addButton = folder.add(object, "add").name("Done (add to scene)")
     addButton.onChange(() => {
-        const startPoint = new Point(body.pos.x, body.pos.y)
-        const endPoint = new Point(body.vel.x + body.pos.x, body.vel.y + body.pos.y)
-        const length = Vector_utils.getLength(startPoint.x, endPoint.x, startPoint.y, endPoint.y)
-        body.vector = new Vector(length, startPoint, endPoint)
-
         body.update();
         main.bodies.push(body)
         scene.add(body.mesh)
@@ -120,10 +119,15 @@ function reset() {
     for (const body of main.bodies) {
         scene.remove(body.mesh)
         scene.remove(body.velVec)
-        gui.removeFolder(gui.__folders[`Body ${body.id}`])
+        if (gui.__folders[`Body ${body.id}`]) {
+            gui.removeFolder(gui.__folders[`Body ${body.id}`])
+        }
     }
     main.bodies.splice(0)
 }
+
+const axes = new THREE.AxesHelper(100)
+scene.add(axes)
 
 window.addEventListener('resize', onWindowResize)
 
