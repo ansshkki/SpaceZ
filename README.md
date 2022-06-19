@@ -6,7 +6,7 @@ Uses Webpack as a server, Three.js to draw elements and TypeScript programming l
 
 ## How to run
 
-1. First, you need to have Node.js and npm installed.
+1. First, you need to have [Node.js](https://nodejs.org/) and [npm](https://www.npmjs.com/) installed.
 2. Install modules
     ```shell
     npm install
@@ -16,6 +16,15 @@ Uses Webpack as a server, Three.js to draw elements and TypeScript programming l
     npm run dev
     ```
 4. Enjoy!
+
+## Contributors
+
+This is our 3rd year project for Scientific Calculations subject
+
+- Anas Shakaki [@ansshkki](https://github.com/ansshkki) (It's me!)
+- Obada Al-Maleh [@obaa10](https://github.com/obaa10)
+- Ahmad Alzoubi
+- MHD Nour Kaskas
 
 ## Screenshots
 
