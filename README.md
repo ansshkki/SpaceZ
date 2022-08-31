@@ -23,7 +23,7 @@ This is our 3rd year project for Scientific Calculations subject
 
 - Anas Shakaki [@ansshkki](https://github.com/ansshkki) (It's me!)
 - Obada Al-Maleh [@obaa10](https://github.com/obaa10)
-- Ahmad Alzoubi
+- Ahmad Alzoubi [@AHDZB](https://github.com/AHDZB)
 - MHD Nour Kaskas
 
 ## Screenshots
