@@ -1,4 +1,4 @@
-# Celestial Bodies Simulation
+# SpaceZ
 
 Web app to simulate gravity force between bodies and planets in the space.
 
